@@ -1,0 +1,26 @@
+// ====================================================================================================
+// Components / Link
+// ====================================================================================================
+
+// Link defaults
+// --------------------------------------------------
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p a {
+  color: color(primary, base);
+  cursor: pointer;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+
+// Icon link
+// --------------------------------------------------
+
+// Pair link classes with '.icon' classes
+// Select icon from generated $iconDefaults utility classes
+// Example usage: '<a class="icon--inline icon__arrow-right--after" href="#">Link</a>'

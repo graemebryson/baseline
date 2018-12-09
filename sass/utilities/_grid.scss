@@ -1,0 +1,84 @@
+// ====================================================================================================
+// Utilities / Grid
+// ====================================================================================================
+
+// Define grid defaults
+// --------------------------------------------------
+
+// Grid gutters
+$gutter__width--base: spacing(5);
+$gutter__width--narrow: spacing(3);
+$gutter__width--wide: spacing(8);
+
+
+// Build grid
+// --------------------------------------------------
+
+.grid {
+  width: 100%;
+  // Grid to flex from medium
+  @include mq($from: medium) {
+    @include flexbox;
+    // Columns — base
+    & > .col {
+      @include flex(1);
+      &:not(:last-child) { margin-right: $gutter__width--base; }
+    }
+    // Columns — variants
+    &.grid--narrow > .col:not(:last-child) { margin-right: $gutter__width--narrow; }
+    &.grid--wide > .col:not(:last-child) { margin-right: $gutter__width--wide; }
+  }
+}
+
+
+// Grid Modifiers
+// --------------------------------------------------
+
+// Set grid to flex on all device sizes
+.grid--all {
+  @include flexbox;
+  @include justify-content(space-between);
+}
+
+// Set flex direction - column
+.grid__direction--column {
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+// Set flex direction - row
+.grid__direction--row {
+  @include flexbox;
+  @include flex-direction(row);
+}
+
+// Align grid items — bottom
+.grid__vertical-align--bottom { @include align-items(flex-end); }
+
+// Align grid items — center (vertical)
+.grid__vertical-align--center { @include align-items(center); }
+
+// Align grid items — center (horizontal)
+.grid__justify--center { @include justify-content(center); }
+
+
+// Column Modifiers
+// --------------------------------------------------
+
+// Fill remaining horizontal space
+.col--fill { @include flex(1); }
+
+// Push column to center of parent
+.col__push--center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// Push column to bottom of parent
+.col__push--bottom { margin-top: auto; }
+
+// Push column to right of parent
+.col__push--right { margin-left: auto; }
+
+// Push column to left of parent
+.col__push--left { margin-right: auto; }

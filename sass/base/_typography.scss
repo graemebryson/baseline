@@ -1,0 +1,83 @@
+// ====================================================================================================
+// Base / Typography
+// ====================================================================================================
+
+// Update default font-size & line-height values via $font-sizeDefaults
+// $font-sizeDefaults map stored in 'variables/typography'
+
+// Global typography defaults
+// --------------------------------------------------
+
+body {
+  @include font-size(base);
+  color: color(type, base);
+  font-family: font-family(base);
+  font-weight: font-weight(base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  // Text selection
+  @include text-selection {
+    color: white;
+    background: color(type, base);
+  }
+}
+
+
+// Paragraph styles
+// --------------------------------------------------
+
+p { @include rem(margin-bottom, spacing(3)); }
+
+small,
+.text__s {
+  @include font-size(small);
+}
+
+.text__xs { @include font-size(xsmall); }
+
+
+// Heading styles
+// --------------------------------------------------
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: color(type, dark);
+  font-weight: font-weight(base);
+}
+
+h1, .h1 {
+  @include font-size(h1);
+  @include rem(margin, 0 0 spacing(4));
+}
+
+h2, .h2 {
+  @include font-size(h2);
+  @include rem(margin, 0 0 spacing(4));
+}
+
+h3, .h3 {
+  @include font-size(h3);
+  @include rem(margin, 0 0 spacing(4));
+}
+
+h4, .h4 {
+  @include font-size(h4);
+  @include rem(margin, 0 0 spacing(4));
+}
+
+h5, .h5 {
+  @include font-size(h5);
+  @include rem(margin, 0 0 spacing(4));
+}
+
+h6, .h6 {
+  @include font-size(h6);
+  @include rem((
+    letter-spacing: 0.05rem,
+    margin: 0 0 spacing(4)
+  ));
+  text-transform: uppercase;
+}

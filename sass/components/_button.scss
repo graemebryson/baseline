@@ -1,0 +1,86 @@
+// ====================================================================================================
+// Components / Button
+// ====================================================================================================
+
+// Button
+// --------------------------------------------------
+
+button,
+input[type="button"],
+input[type="submit"],
+.button {
+  @include font-size(base);
+  @include rem((
+		border-radius: $border-radius__base,
+		padding: 0 spacing(4)
+	));
+	border: 0 none;
+	color: white;
+	cursor: pointer;
+  display: inline-block;
+  line-height: 3;
+  -webkit-appearance: none;
+}
+
+
+// Sizing modifiers
+// --------------------------------------------------
+
+// Small button
+.button--small {
+  @include font-size(small);
+  @include rem(padding, 0 spacing(3));
+  line-height: 3;
+}
+
+// Full-width button
+.button--full {
+  display: block;
+  width: 100%;
+}
+
+// Full-width button for small devices only
+.button--full--bp-small {
+  @include mq($until: medium) {
+    display: block;
+    width: 100%;
+  }
+}
+
+
+// Cosmetic modifiers
+// --------------------------------------------------
+
+// Primary button
+.button--primary {
+	background-color: color(primary, base);
+	&:hover { background-color: color(primary, light); }
+  &:focus { background-color: color(primary, dark); }
+}
+
+// Secondary button
+.button--secondary {
+	background-color: color(secondary, base);
+	&:hover { background-color: color(secondary, light); }
+  &:focus { background-color: color(secondary, dark); }
+}
+
+
+// Icon button
+// --------------------------------------------------
+
+// Pair button classes with '.icon' classes
+// Select icon from generated $iconDefaults utility classes
+// Example usage: '<button class="button button--primary icon--inline icon__arrow-right--after">Button</button>'
+
+
+// States
+// --------------------------------------------------
+
+button:disabled,
+button:disabled:hover {
+  background-color: color(state, disabled);
+  box-shadow: none;
+  color: color(type, light);
+  cursor: not-allowed;
+}

@@ -1,0 +1,19 @@
+// ====================================================================================================
+// Base / Common
+// ====================================================================================================
+
+// Update default common values in 'variables/common'
+
+// Generic border classes
+// --------------------------------------------------
+
+.border__all--base { border: $border__base; }
+.border__bottom--base { border-bottom: $border__base; }
+
+
+// Generic elevation classes
+// --------------------------------------------------
+
+.elevation__raised { box-shadow: $elevation__raised; }
+.elevation__overlay { box-shadow: $elevation__overlay; }
+.elevation__pop-out { box-shadow: $elevation__pop-out; }

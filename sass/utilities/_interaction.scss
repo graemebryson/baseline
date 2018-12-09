@@ -1,0 +1,86 @@
+// ====================================================================================================
+// Utilities / Interaction
+// ====================================================================================================
+
+// Define animation defaults
+// --------------------------------------------------
+
+// Animation speed
+$animation__speed--base: 0.3s;
+$animation__speed--slow: 1s;
+$animation__speed--fast: 0.15s;
+
+// Animation method
+$animation__method--base: ease-out;
+
+
+// Set global animation on common elements
+// --------------------------------------------------
+
+a,
+a img,
+button,
+input,
+select,
+textarea {
+	@include transition(all, $animation__speed--fast, $animation__method--base);
+}
+
+
+// Block animation defaults
+// Pair with an animation style
+// Example usage: '<div class="animated animation__fade-in">Content</div>'
+// --------------------------------------------------
+
+.animated {
+  animation-duration: $animation__speed--slow;
+  animation-fill-mode: both;
+}
+
+
+// Animation styles
+// --------------------------------------------------
+
+// Fade in
+.animation__fade-in { animation-name: animation__fade-in; }
+
+@keyframes animation__fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Fade out
+.animation__fade-out { animation-name: animation__fade-out; }
+
+@keyframes animation__fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+// Fade in/up (small)
+.animation__fade-in-up--small { animation-name: animation__fade-in-up--small; }
+
+@keyframes animation__fade-in-up--small {
+  0% {
+		@include transform(translateY(50px));
+    opacity: 0;
+  }
+  100% {
+    @include transform(translateY(0));
+    opacity: 1;
+  }
+}
+
+// Fade out/down (small)
+.animation__fade-out-down--small { animation-name: animation__fade-out-down--small; }
+
+@keyframes animation__fade-out-down--small {
+  0% {
+    @include transform(translateY(0));
+    opacity: 1;
+  }
+  100% {
+    @include transform(translateY(50px));
+    opacity: 0;
+  }
+}

@@ -1,0 +1,41 @@
+// ====================================================================================================
+// Variables / Color
+// ====================================================================================================
+
+// Define default color values
+// Values can be accessed via 'color($color, $variant)'
+// Example usage: 'background: color(primary, base);'
+// --------------------------------------------------
+
+$colorDefaults: (
+  primary: (
+    'lightest': hsl(0, 0%, 0%),
+    'lighter':  hsl(0, 0%, 0%),
+    'light':    hsl(0, 0%, 0%),
+    'base':     hsl(0, 0%, 0%),
+    'dark':     hsl(0, 0%, 0%),
+    'darker':   hsl(0, 0%, 0%),
+    'darkest':  hsl(0, 0%, 0%)
+  ),
+  secondary: (
+    'lightest': hsl(0, 0%, 0%),
+    'lighter':  hsl(0, 0%, 0%),
+    'light':    hsl(0, 0%, 0%),
+    'base':     hsl(0, 0%, 0%),
+    'dark':     hsl(0, 0%, 0%),
+    'darker':   hsl(0, 0%, 0%),
+    'darkest':  hsl(0, 0%, 0%)
+  ),
+  type: (
+    'lightest': hsl(0, 0%, 0%),
+    'lighter':  hsl(0, 0%, 0%),
+    'light':    hsl(0, 0%, 0%),
+    'base':     hsl(0, 0%, 0%),
+    'dark':     hsl(0, 0%, 0%)
+  ),
+  state: (
+    'error':    hsl(0, 0%, 0%),
+    'disabled': hsl(0, 0%, 0%),
+    'success':  hsl(0, 0%, 0%)
+  )
+) !default;

@@ -1,0 +1,23 @@
+// ====================================================================================================
+// Utilities / Alignment
+// ====================================================================================================
+
+// Generic alignment classes
+// --------------------------------------------------
+
+// Block alignment
+.push--right { float: right; }
+
+.push--left { float: left; }
+
+.push--center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// Text alignment
+.align--right { text-align: right; }
+
+.align--left { text-align: left; }
+
+.align--center { text-align: center; }

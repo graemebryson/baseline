@@ -1,0 +1,242 @@
+// ====================================================================================================
+// Components / Form
+// ====================================================================================================
+
+// Input group
+// Apply to form fieldsets
+// Pair related form elements
+// --------------------------------------------------
+
+.input__group {
+	@include rem(margin-bottom, spacing(3));
+	display: inline-block;
+	width: 100%;
+}
+
+
+// Input label
+// Apply to form labels
+// --------------------------------------------------
+
+.input__label {
+	@include font-size(small);
+	@include rem(margin-bottom, spacing(2));
+	color: color(type, light);
+	display: block;
+	line-height: 1;
+}
+
+
+// Input item
+// Apply to all text and select form inputs
+// --------------------------------------------------
+
+.input__item {
+	@include font-size(base);
+	@include rem(padding, 0 spacing(4));
+	background-color: white;
+	border: 0 none;
+	border-radius: $border-radius__base;
+	box-shadow: $border__input;
+	color: color(type, base);
+	font-family: font-family(base);
+	font-weight: font-weight(base);
+	width: 100%;
+	// Strip platform-native styling
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+
+// Base form input
+// Apply to all basic text-like form inputs
+// Pair with '.input__item'
+// Example usage: '<input class="input__item input__base">'
+// --------------------------------------------------
+
+.input__base { line-height: 3; }
+
+
+// Large form input
+// Apply to large text form inputs such as `<textarea>`
+// Pair with '.input__item'
+// Example usage: '<input class="input__item input__large">'
+// --------------------------------------------------
+
+.input__large {
+	@include rem((
+		height: 150px,
+		padding-top: spacing(3),
+		padding-bottom: spacing(3)
+	));
+}
+
+
+// Select form input
+// Pair with '.input__item'
+// Example usage: '<select class="input__item input__select">'
+// --------------------------------------------------
+
+.input__select {
+	cursor: pointer;
+	line-height: 3;
+}
+
+
+// Input placeholder
+// --------------------------------------------------
+
+.input__item {
+	@include input-placeholder {
+		color: color(type, lightest);
+		opacity: 1;
+	}
+}
+
+
+// Input states
+// --------------------------------------------------
+
+// Disabled
+// Apply to parent '.input__group'
+.input__group:disabled {
+	// Label
+	.input__label { color: color(type, lightest); }
+	// Input
+	.input__item {
+		background-color: color(state, disabled);
+	  box-shadow: none;
+	  cursor: not-allowed;
+	}
+}
+
+// Error
+// Apply to parent '.input__group'
+.input__group.error {
+	// Label
+	.input__label { color: color(state, error); }
+	// Input
+	.input__item {
+		box-shadow: $border__input--error;
+		&:focus { box-shadow: $border__input--focus }
+	}
+}
+
+// Focus
+.input__item:focus {
+	box-shadow: $border__input, $border__input--focus;
+	outline: 0;
+}
+
+
+// Custom selection form input
+// Create custom checkbox & radio inputs using pseudo-elements
+// Refer to docs for structure & usage
+// --------------------------------------------------
+
+// Replacement selection control indicator
+.control__indicator {
+	@include position(absolute, $left: 0);
+	@include rem((
+		height: 2rem,
+		top: 0.1rem,
+		width: 2rem,
+	));
+	border-radius: $border-radius__base;
+	box-shadow: $border__input;
+}
+
+// Replacement selection control label
+.input__control {
+	@include font-size(small);
+	@include rem((
+		margin-bottom: spacing(3),
+		padding-left: spacing(5)
+	));
+	cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+// Hide default form inputs
+.input__control {
+	input {
+		position: absolute;
+		z-index: -1;
+		opacity: 0;
+	}
+}
+
+
+// Custom checkbox
+// --------------------------------------------------
+
+// Build ':checked' icon
+.input__control--checkbox .control__indicator:after {
+	@include rem((
+		border-width: 0 2px 2px 0,
+		height: 8px,
+		left: 8px,
+		top: 4px,
+		width: 3px
+	));
+	@include transform(rotate(45deg));
+  border-color: white;
+	border-style: solid;
+}
+
+
+// Custom radio buttons
+// --------------------------------------------------
+
+// Round control indicator
+.input__control--radio .control__indicator {
+	border-radius: 50%;
+	// Build ':checked' icon
+	&:after {
+		@include rem((
+			height: 6px,
+			left: 7px,
+			top: 7px,
+			width: 6px
+		));
+		background-color: white;
+	  border-radius: 50%;
+	}
+}
+
+
+// Custom selection states
+// --------------------------------------------------
+
+// Checked
+.input__control {
+	// Style control indicator on ':checked'
+	input:checked ~ .control__indicator { background: color(primary, base); }
+	// Show control indicator icon on ':checked'
+	input:checked ~ .control__indicator:after { display: block; }
+}
+
+// Unchecked
+.input__control {
+	// Hide control indicator icon whilst unchecked
+	.control__indicator:after {
+		content: '';
+		position: absolute;
+		display: none;
+	}
+}
+
+// Disabled
+.input__control {
+	// Style disabled control indicator
+	input:disabled ~ .control__indicator {
+		background-color: color(state, disabled);
+		box-shadow: none;
+	  cursor: not-allowed;
+	}
+	// Style disabled control indicator icon
+	&--checkbox input:disabled ~ .control__indicator:after { border-color: color(type, light); }
+	&--radio input:disabled ~ .control__indicator:after { background: color(type, light); }
+}

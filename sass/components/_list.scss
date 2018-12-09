@@ -1,0 +1,65 @@
+// ====================================================================================================
+// Components / List
+// ====================================================================================================
+
+// Block list defaults
+// Displays list items in a stacked vertical block
+// --------------------------------------------------
+
+ul.list__block--stripped {
+  margin-left: 0;
+  list-style: none;
+}
+
+ul.list__block {
+  li {
+    @include rem(padding-left, spacing(4));
+    line-height: 1.5;
+    position: relative;
+    // List icon
+    &:before {
+      @include position(absolute, $top: 0, $left: 0);
+      color: color(primary, base);
+      font-family: font-family(icon);
+    }
+    // Nested lists
+    ul { @include rem(margin-left, spacing(3)); }
+  }
+}
+
+
+// Block list styles
+// Icons positioned absolutely to preserve gutter below
+// Fetch icons via $iconDefaults map
+// --------------------------------------------------
+
+// Dots
+ul.list--dots {
+  // List item
+  li {
+    // List icon
+    @include icon(before, 'dot') {
+      @include transform(scale(0.4));
+    }
+    // Nested list item
+    ul > li { @include icon(before, 'dot-outline'); }
+  }
+}
+
+
+// Inline list defaults
+// Displays list items in a single horizontal line
+// --------------------------------------------------
+
+ul.list__inline {
+  margin-left: 0;
+  list-style: none;
+  li {
+    display: inline-block;
+    line-height: 1.5;
+    // Apply spacing to all but last list items
+    &:not(:last-child) {
+      margin-right: spacing(4);
+    }
+  }
+}

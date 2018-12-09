@@ -1,0 +1,54 @@
+// ====================================================================================================
+// Components / Accordion
+// ====================================================================================================
+
+// Content accordion
+// Refer to docs for structure & usage
+// --------------------------------------------------
+
+.accordion {
+  // Accordion item
+  .item {
+    @include rem((
+      padding-top: spacing(3),
+      padding-bottom: spacing(3)
+    ));
+    border-bottom: $border__base;
+    position: relative;
+    &:first-child { border-top: $border__base; }
+    // Item toggle
+    .item__toggle {
+      cursor: pointer;
+      position: relative;
+      // Item heading
+      // Provide clearance for indicator icon
+      & > * {
+        @include rem(padding-right, spacing(5));
+        margin: 0;
+      }
+      // Indicator icon
+      @include icon(after, 'chevron-down') {
+        @include position(absolute, $top: 0, $right: 0);
+        @include transform-origin(50%);
+        @include transition(all, $animation__speed--fast, $animation__method--base);
+      }
+    }
+    // Item content
+    .item__content {
+      @include rem(padding-top, spacing(2));
+      // Strip 'margin-bottom' from item last paragraph
+      & > p:last-child { margin-bottom: 0; }
+    }
+    // States
+    &.state--expanded {
+      // Rotate indicator icon on toggle
+      .item__toggle:after { @include transform(rotate(-180deg)); }
+      // Display item content
+      .item__content {
+        display: block;
+        opacity: 1;
+      }
+    }
+    &.state--collapsed .item__content { display: none; }
+  }
+}

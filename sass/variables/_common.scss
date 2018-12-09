@@ -1,0 +1,30 @@
+// ====================================================================================================
+// Variables / Common
+// ====================================================================================================
+
+// Import map-get function for $colorDefaults
+@import 'tools/function';
+
+// Define border defaults
+// --------------------------------------------------
+
+// Border
+$border__base: 1px solid color(type, lightest) !default;
+
+// Border-radius
+$border-radius__base: 4px !default;
+
+
+// Define box-shadow defaults
+// --------------------------------------------------
+
+// Input
+$border__input: 0 0 0 1px color(type, lightest) inset !default;
+$border__input--focus: 0 0 0 3px color(primary, lightest) !default;
+$border__input--error: 0 0 0 1px color(state, error) inset !default;
+$border__input--disabled: 0 0 0 1px color(state, disabled) inset !default;
+
+// Elevation
+$elevation__raised: 0 1px 2px 0 rgba(0,0,0,0.10) !default;
+$elevation__overlay: 0 4px 8px 0 rgba(0,0,0,0.10) !default;
+$elevation__pop-out: 0 12px 24px 0 rgba(0,0,0,0.10) !default;

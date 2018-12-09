@@ -1,0 +1,18 @@
+// ====================================================================================================
+// Components / Image
+// ====================================================================================================
+
+// Image defaults
+// --------------------------------------------------
+
+// Fluid images
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+// If assigned width/height attribute, don't make the image fluid
+img[width],
+img[height] {
+  max-width: none;
+}

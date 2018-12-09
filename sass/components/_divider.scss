@@ -1,0 +1,27 @@
+// ====================================================================================================
+// Components / Divider
+// ====================================================================================================
+
+// Divider
+// --------------------------------------------------
+
+hr.divider {
+  @include rem(height, 0.1rem);
+  background: color(type, light);
+  border: 0;
+}
+
+
+// Sizing modifiers
+// Pair with default '.divider' class
+// Example usage: '<hr class="divider divider--base">'
+// --------------------------------------------------
+
+// Small divider
+hr.divider--small { @include rem(margin, spacing(3) 0); }
+
+// Medium divider
+hr.divider--medium { @include rem(margin, spacing(5) 0); }
+
+// Large divider
+hr.divider--large { @include rem(margin, spacing(8) 0); }

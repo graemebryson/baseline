@@ -1,0 +1,87 @@
+// ====================================================================================================
+// Variables / Typography
+// ====================================================================================================
+
+// Define font-family defaults
+// Values can be accessed via 'font-family($key)'
+// Example usage: 'font-family: font-family(sans);'
+// --------------------------------------------------
+
+$font-familyDefaults: (
+  'base': (-apple-system, BlinkMacSystemFont, sans-serif),
+  'mono': (Consolas, monospace),
+  'icon': ('Material-Design-Iconic-Font')
+) !default;
+
+
+// Define font-weight defaults
+// Values can be accessed via 'font-weight($key)'
+// Example usage: 'font-weight: font-weight(bold);'
+// --------------------------------------------------
+
+$font-weightDefaults: (
+  'light':    300,
+  'base':     400,
+  'semibold': 500,
+  'bold':     800
+) !default;
+
+
+// Define responsive font-size defaults (px)
+// Also accepts breakpoint-based line-height values
+// Example usage: '@include font-size(h1);'
+// Scaling @base — https://www.modularscale.com/?15&px&1.25
+// Scaling @medium — https://www.modularscale.com/?16&px&1.25
+// Scaling @large — https://www.modularscale.com/?17&px&1.25
+// Scaling @xlarge — https://www.modularscale.com/?18&px&1.25
+// --------------------------------------------------
+
+$font-sizeDefaults: (
+  'base': (
+    'base':   (font-size: 15px, line-height: 1.5),
+		'medium': (font-size: 16px),
+    'large':  (font-size: 17px),
+    'xlarge': (font-size: 18px)
+  ),
+  'small': (
+    'base':   (font-size: 13px, line-height: 1.5),
+    'large':  (font-size: 14px)
+  ),
+  'xsmall': (
+    'base':   (font-size: 11px, line-height: 1.5)
+  ),
+  'h1': (
+    'base':   (font-size: 45px, line-height: 1.1),
+		'medium': (font-size: 48px),
+    'large':  (font-size: 51px),
+    'xlarge': (font-size: 54px)
+  ),
+  'h2': (
+    'base':   (font-size: 36px, line-height: 1.1),
+		'medium': (font-size: 39px),
+    'large':  (font-size: 41px),
+    'xlarge': (font-size: 43px)
+  ),
+  'h3': (
+    'base':   (font-size: 29px, line-height: 1.1),
+		'medium': (font-size: 31px),
+    'large':  (font-size: 33px,),
+    'xlarge': (font-size: 35px)
+  ),
+  'h4': (
+    'base':   (font-size: 23px, line-height: 1.1),
+    'medium': (font-size: 25px),
+    'large':  (font-size: 26px),
+    'xlarge': (font-size: 28px)
+  ),
+  'h5': (
+    'base':   (font-size: 18px, line-height: 1.1),
+    'medium': (font-size: 20px),
+    'large':  (font-size: 21px),
+    'xlarge': (font-size: 22px)
+  ),
+  'h6': (
+    'base':   (font-size: 13px, line-height: 1.1),
+    'large':  (font-size: 14px)
+  )
+) !default;

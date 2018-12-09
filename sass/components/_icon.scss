@@ -1,0 +1,44 @@
+// ====================================================================================================
+// Components / Icon
+// ====================================================================================================
+
+// Update available icons via $iconDefaults
+// $iconDefaults map stored in 'variables/icon'
+
+// Loop through $iconDefaults, generating utility classes
+// Example output: '.icon__arrow-right--after:after'
+@each $key, $value in $iconDefaults {
+  .icon__#{$key}--before:before {
+    content: "#{$value}";
+  }
+  .icon__#{$key}--after:after {
+    content: "#{$value}";
+  }
+}
+
+
+// Inline icons (pseudo elements)
+// --------------------------------------------------
+
+// Pair with generated $iconDefaults utility classes
+// Applicable to both links & buttons
+// Example usage: '<a class="icon--inline icon__arrow-right--after">Link</a>'
+.icon--inline:before,
+.icon--inline:after {
+  @include transition(all, $animation__speed--fast, $animation__method--base);
+  display: inline-block;
+  font-family: font-family(icon);
+  line-height: 1;
+  vertical-align: middle;
+  &:hover { text-decoration: none; }
+}
+
+// Icon spacing (before)
+.icon--inline:before {
+  @include rem(margin-right, spacing(1));
+}
+
+// Icon spacing (after)
+.icon--inline:after {
+  @include rem(margin-left, spacing(1));
+}

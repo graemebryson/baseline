@@ -1,0 +1,88 @@
+// ====================================================================================================
+// Layout / Container
+// ====================================================================================================
+
+// Update default container values via $wrapDefaults
+// $wrapDefaults map stored in 'variables/container'
+
+// Loop through $wrapDefaults, generating utility classes
+// $wrapDefaults map stored in 'tools/variables'
+// Example output: '.wrap__m'
+// --------------------------------------------------
+
+@each $mapKey, $mapValue in $wrapDefaults {
+  // Strip units from map values
+  $mapValue: strip-unit($mapValue);
+  .wrap--#{$mapKey} {
+    max-width: #{$mapValue*1px};
+    max-width: #{$mapValue/10*1rem};
+    width: 100%;
+  }
+}
+
+
+// Site container
+// --------------------------------------------------
+
+.site-container {
+  // Allow sticky footer
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+// Site wraps
+// --------------------------------------------------
+
+// Block/section wrap
+.wrap {
+  padding-left: 3%;
+  padding-right: 3%;
+  position: relative;
+  width: 100%;
+  @include mq($from: medium) {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+
+// Sections
+// --------------------------------------------------
+
+// Section defaults
+section {
+  position: relative;
+  width: 100%;
+}
+
+// Base section
+.section--base {
+  @include rem((
+    padding-bottom: layout(3),
+    padding-top: layout(3)
+  ));
+  // Adjust @medium
+  @include mq($from: medium) {
+    @include rem((
+      padding-bottom: layout(4),
+      padding-top: layout(4)
+    ));
+  }
+}
+
+// Large section
+.section--large {
+  @include rem((
+    padding-bottom: layout(4),
+    padding-top: layout(4)
+  ));
+  // Adjust @medium
+  @include mq($from: medium) {
+    @include rem((
+      padding-bottom: layout(5),
+      padding-top: layout(5)
+    ));
+  }
+}

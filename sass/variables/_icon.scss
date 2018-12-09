@@ -1,0 +1,16 @@
+// ====================================================================================================
+// Variables / Icon
+// ====================================================================================================
+
+// Define icons for use as psuedo elements
+// Icon font: http://zavoloklom.github.io/material-design-iconic-font/
+// Example usage: '@include icon(after, 'arrow-right');'
+// --------------------------------------------------
+
+$iconDefaults: (
+  'arrow-right':  '\f2ee',
+  'chevron-down': '\f2f9',
+  'close':        '\f136',
+  'dot':          '\f26d',
+  'dot-outline':  '\f26c'
+);

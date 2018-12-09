@@ -1,0 +1,539 @@
+// ====================================================================================================
+// Utilities / Mixins
+// ====================================================================================================
+
+// Tools — Global
+// ----------------------------------------------------------------------------------------------------
+
+// Rem conversion with px fallback
+// https://github.com/pierreburel/sass-rem
+// Example usage: '@include rem(padding, spacing(1));'
+// --------------------------------------------------
+
+// Set default options
+$rem-baseline: 10px !default;
+$rem-fallback: true !default;
+$rem-px-only: false !default;
+
+@function rem-separator($list, $separator: false) {
+  @if $separator == "comma" or $separator == "space" {
+    @return append($list, null, $separator);
+  }
+  @if function-exists("list-separator") == true {
+    @return list-separator($list);
+  }
+  $test-list: ();
+  @each $item in $list {
+    $test-list: append($test-list, $item, space);
+  }
+  @return if($test-list == $list, space, comma);
+}
+
+// Baseline 1rem to 10px
+@mixin rem-baseline($zoom: 100%) {
+  font-size: $zoom / 16px * $rem-baseline;
+}
+
+@function rem-convert($to, $values...) {
+  $result: ();
+  $separator: rem-separator($values);
+  @each $value in $values {
+    @if type-of($value) == "number" and unit($value) == "rem" and $to == "px" {
+      $result: append($result, $value / 1rem * $rem-baseline + 0px, $separator);
+    } @else if type-of($value) == "number" and unit($value) == "px" and $to == "rem" {
+      $result: append($result, $value / $rem-baseline + 0rem, $separator);
+    } @else if type-of($value) == "list" {
+      $value-separator: rem-separator($value);
+      $value: rem-convert($to, $value...);
+      $value: rem-separator($value, $value-separator);
+      $result: append($result, $value, $separator);
+    } @else {
+      $result: append($result, $value, $separator);
+    }
+  }
+  @return if(length($result) == 1, nth($result, 1), $result);
+}
+
+// Handles multiple arguments
+// Outputs each $key/$value pair as property/value in rem, with px fallback
+@mixin rem($properties, $values...) {
+  @if type-of($properties) == "map" {
+    @each $property in map-keys($properties) {
+      @include rem($property, map-get($properties, $property));
+    }
+  } @else {
+    @each $property in $properties {
+      @if $rem-fallback or $rem-px-only {
+        #{$property}: rem-convert(px, $values...);
+      }
+      @if not $rem-px-only {
+        #{$property}: rem-convert(rem, $values...);
+      }
+    }
+  }
+}
+
+
+// Utilities — Flex
+// ----------------------------------------------------------------------------------------------------
+
+// Flexbox Containers
+// Values: flex | inline-flex
+// --------------------------------------------------
+
+@mixin flexbox {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+%flexbox { @include flexbox; }
+
+@mixin inline-flex {
+	display: -webkit-inline-box;
+	display: -webkit-inline-flex;
+	display: -moz-inline-flex;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+}
+%inline-flex { @include inline-flex; }
+
+
+// Flexbox Direction
+// Values: row | row-reverse | column | column-reverse
+// --------------------------------------------------
+
+@mixin flex-direction($value: row) {
+	@if $value == row-reverse {
+		-webkit-box-direction: reverse;
+		-webkit-box-orient: horizontal;
+	} @else if $value == column {
+		-webkit-box-direction: normal;
+		-webkit-box-orient: vertical;
+	} @else if $value == column-reverse {
+		-webkit-box-direction: reverse;
+		-webkit-box-orient: vertical;
+	} @else {
+		-webkit-box-direction: normal;
+		-webkit-box-orient: horizontal;
+	}
+	-webkit-flex-direction: $value;
+	-moz-flex-direction: $value;
+	-ms-flex-direction: $value;
+	flex-direction: $value;
+}
+// Shorter version
+@mixin flex-dir($args...) { @include flex-direction($args...); }
+
+// Flexbox Wrap — Values: nowrap | wrap | wrap-reverse
+@mixin flex-wrap($value: nowrap) {
+	-webkit-flex-wrap: $value;
+	-moz-flex-wrap: $value;
+	@if $value == nowrap {
+		-ms-flex-wrap: none;
+	} @else {
+		-ms-flex-wrap: $value;
+	}
+	flex-wrap: $value;
+}
+
+
+// Flexbox Flow
+// Values: <flex-direction> | <flex-wrap>
+// --------------------------------------------------
+
+@mixin flex-flow($values: (row nowrap)) {
+	-webkit-flex-flow: $values;
+	-moz-flex-flow: $values;
+	-ms-flex-flow: $values;
+	flex-flow: $values;
+}
+
+
+// Flexbox Order
+// Default: 0
+// --------------------------------------------------
+
+@mixin order($int: 0) {
+	-webkit-box-ordinal-group: $int + 1;
+	-webkit-order: $int;
+	-moz-order: $int;
+	-ms-flex-order: $int;
+	order: $int;
+}
+
+
+// Flexbox Grow
+// Default: 0
+// --------------------------------------------------
+
+@mixin flex-grow($int: 0) {
+	-webkit-box-flex: $int;
+	-webkit-flex-grow: $int;
+	-moz-flex-grow: $int;
+	-ms-flex-positive: $int;
+	flex-grow: $int;
+}
+
+
+// Flexbox Shrink
+// Default: 1
+// --------------------------------------------------
+
+@mixin flex-shrink($int: 1) {
+	-webkit-flex-shrink: $int;
+	-moz-flex-shrink: $int;
+	-ms-flex-negative: $int;
+	flex-shrink: $int;
+}
+
+
+// Flexbox Basis
+// Default: auto
+// --------------------------------------------------
+
+@mixin flex-basis($value: auto) {
+	-webkit-flex-basis: $value;
+	-moz-flex-basis: $value;
+	-ms-flex-preferred-size: $value;
+	flex-basis: $value;
+}
+
+
+// Flexbox "Flex"
+// Values: none | <flex-grow> <flex-shrink> | <flex-basis>
+// --------------------------------------------------
+
+@mixin flex($fg: 1, $fs: null, $fb: null) {
+	// Set a variable to be used by box-flex properties
+	$fg-boxflex: $fg;
+	// Box-Flex only supports a flex-grow value so let's grab the
+	// first item in the list and just return that.
+	@if type-of($fg) == 'list' {
+		$fg-boxflex: nth($fg, 1);
+	}
+	-webkit-box-flex: $fg-boxflex;
+	-webkit-flex: $fg $fs $fb;
+	-moz-box-flex: $fg-boxflex;
+	-moz-flex: $fg $fs $fb;
+	-ms-flex: $fg $fs $fb;
+	flex: $fg $fs $fb;
+}
+
+
+// Flexbox Justify Content
+// Values: flex-start | flex-end | center | space-between | space-around
+// --------------------------------------------------
+
+@mixin justify-content($value: flex-start) {
+	@if $value == flex-start {
+		-webkit-box-pack: start;
+		-ms-flex-pack: start;
+	} @else if $value == flex-end {
+		-webkit-box-pack: end;
+		-ms-flex-pack: end;
+	} @else if $value == space-between {
+		-webkit-box-pack: justify;
+		-ms-flex-pack: justify;
+	} @else if $value == space-around {
+		-ms-flex-pack: distribute;
+	} @else {
+		-webkit-box-pack: $value;
+		-ms-flex-pack: $value;
+	}
+	-webkit-justify-content: $value;
+	-moz-justify-content: $value;
+	justify-content: $value;
+}
+// Shorter version
+@mixin flex-just($args...) { @include justify-content($args...); }
+
+
+// Flexbox Align Items
+// Values: flex-start | flex-end | center | baseline | stretch
+// --------------------------------------------------
+
+@mixin align-items($value: stretch) {
+	@if $value == flex-start {
+		-webkit-box-align: start;
+		-ms-flex-align: start;
+	} @else if $value == flex-end {
+		-webkit-box-align: end;
+		-ms-flex-align: end;
+	} @else {
+		-webkit-box-align: $value;
+		-ms-flex-align: $value;
+	}
+	-webkit-align-items: $value;
+	-moz-align-items: $value;
+	align-items: $value;
+}
+
+
+// Flexbox Align Self
+// Values: auto | flex-start | flex-end | center | baseline | stretch
+// --------------------------------------------------
+
+@mixin align-self($value: auto) {
+	// No Webkit Box Fallback.
+	-webkit-align-self: $value;
+	-moz-align-self: $value;
+	@if $value == flex-start {
+		-ms-flex-item-align: start;
+	} @else if $value == flex-end {
+		-ms-flex-item-align: end;
+	} @else {
+		-ms-flex-item-align: $value;
+	}
+	align-self: $value;
+}
+
+
+// Flexbox Align Content
+// Values: flex-start | flex-end | center | space-between | space-around | stretch
+// Default: stretch
+// --------------------------------------------------
+
+@mixin align-content($value: stretch) {
+	// No Webkit Box Fallback
+	-webkit-align-content: $value;
+	-moz-align-content: $value;
+	@if $value == flex-start {
+		-ms-flex-line-pack: start;
+	} @else if $value == flex-end {
+		-ms-flex-line-pack: end;
+	} @else {
+		-ms-flex-line-pack: $value;
+	}
+	align-content: $value;
+}
+
+
+// Flexbox container
+// --------------------------------------------------
+
+@mixin flexbox-container {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  -webkit-flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-direction: row;
+  -ms-flex-wrap: nowrap;
+  -ms-flex-pack: start;
+  -ms-flex-line-pack: stretch;
+}
+
+
+// Flexbox item
+// --------------------------------------------------
+
+@mixin flexbox-item {
+  -ms-flex-order: 0;
+  order: 0;
+  flex: 0 1 auto;
+  align-self: center;
+  -webkit-order: 0;
+  -webkit-flex: 0 1 auto;
+  -webkit-align-self: center;
+  -ms-flex: 0 1 auto;
+  -ms-flex-item-align: center;
+}
+
+
+// Flexbox Item Order
+// --------------------------------------------------
+
+@mixin flex-order($int: 0) {
+	-webkit-box-ordinal-group: $int + 1;
+	-webkit-order: $int;
+	-moz-order: $int;
+	-ms-flex-order: $int;
+	order: $int;
+}
+
+
+// Utilities — Interaction
+// ----------------------------------------------------------------------------------------------------
+
+// Transition
+// Example usage: '@include transition(all, 0.2s, ease-in-out);'
+// --------------------------------------------------
+
+@mixin transition($transition-property, $transition-time, $method) {
+	-webkit-transition: $transition-property $transition-time $method;
+	-moz-transition: $transition-property $transition-time $method;
+	-ms-transition: $transition-property $transition-time $method;
+	-o-transition: $transition-property $transition-time $method;
+	transition: $transition-property $transition-time $method;
+}
+
+
+// Transform
+// Example usage: '@include transform(translateY(-5px));'
+// --------------------------------------------------
+
+@mixin transform($transforms) {
+	-moz-transform: $transforms;
+	-o-transform: $transforms;
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+	transform: $transforms;
+}
+
+
+// Transform Origin
+// Example usage: '@include transform-origin(50%);'
+// --------------------------------------------------
+
+@mixin transform-origin($transform-origin) {
+  -webkit-transform-origin: $transform-origin;
+  -ms-transform-origin: $transform-origin;
+  transform-origin: $transform-origin;
+}
+
+
+// Utilities — Position
+// ----------------------------------------------------------------------------------------------------
+
+// Absolute positioning
+// Example usage: '@include position(absolute, $top: 0, $left: 0 );'
+// --------------------------------------------------
+
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+
+// Base — Typography
+// ----------------------------------------------------------------------------------------------------
+
+// Responsive font-sizing
+// Map stored in 'variables/typography'
+// Example usage: '@include font-size(h1);'
+// --------------------------------------------------
+
+// Build responsive font-sizing media queries
+@mixin respond-above($breakpoint-name) {
+  $breakpoint-value: breakpoint($breakpoint-name);
+  @if $breakpoint-value {
+    @media screen and (min-width: $breakpoint-value) {
+      @content;
+    }
+  }
+}
+
+// Fetch properties set in '$font-sizeDefaults'
+@mixin text-size($text-size, $breakpoint-name: base) {
+  $text-size-properties: text-properties-for($text-size, $breakpoint-name);
+  @if $text-size-properties {
+    // Fetch properties, stripping units
+    $font-size: map-get($text-size-properties, 'font-size');
+    $font-size: strip-unit($font-size);
+    $line-height: map-get($text-size-properties, 'line-height');
+    // Build styles with px fallback
+    font-size: $font-size * 1px;
+    font-size: $font-size / 10 * 1rem;
+    line-height: map-get($text-size-properties, 'line-height');
+  }
+}
+
+// Output properties to each breakpoint set in '$font-sizeDefaults'
+@mixin font-size($text-size, $default-breakpoint: base) {
+  @include text-size($text-size, $default-breakpoint);
+  $text-breakpoints-map: text-breakpoints-for($text-size);
+  $text-breakpoints-keys: map-keys($text-breakpoints-map);
+  @each $breakpoint-name in $text-breakpoints-keys {
+    @if $breakpoint-name != $default-breakpoint {
+      @include respond-above($breakpoint-name) {
+        @include text-size($text-size, $breakpoint-name);
+      }
+    }
+  }
+}
+
+
+// Text selection styling properties
+// Example usage: '@include text-selection { background: color(type, base); }'
+// --------------------------------------------------
+
+@mixin text-selection {
+  ::-moz-selection { @content; }
+  ::selection { @content; }
+}
+
+
+// Components — Icon
+// ----------------------------------------------------------------------------------------------------
+
+// Use icons as pseudo elements
+// $iconDefaults map stored in 'variables/icons'
+// Example usage: '@include icon(before, 'close');'
+// --------------------------------------------------
+
+@mixin icon($position: after, $icon: false, $styles: true) {
+  &:#{$position} {
+    @if $icon {
+      content: "#{map-get($iconDefaults, $icon)}";
+    }
+    @if $styles {
+      font-family: font-family(icon);
+      font-style: normal;
+      font-weight: normal;
+      speak: none;
+      vertical-align: middle;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    @content;
+  }
+}
+
+
+// Components — Input
+// ----------------------------------------------------------------------------------------------------
+
+// Input placeholders
+// Example usage: '@include input-placeholder { color: color(type, lightest);'
+// --------------------------------------------------
+
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
+
+
+// Layout — Tools
+// ----------------------------------------------------------------------------------------------------
+
+// Maintain aspect ratio
+// Example usage: '@include aspect-ratio(4,3);'
+// --------------------------------------------------
+
+@mixin aspect-ratio($ratio-or-width, $height: null) {
+  $padding: if($height, percentage($height/$ratio-or-width), percentage(1/$ratio-or-width));
+  &:before {
+    content:'';
+    float: left;
+    padding-bottom: $padding;
+  }
+  &:after  {
+    content:'';
+    display: table;
+    clear: both;
+  }
+}

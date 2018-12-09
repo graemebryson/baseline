@@ -1,0 +1,14 @@
+// ====================================================================================================
+// Variables / Container
+// ====================================================================================================
+
+// Define default container width values (px)
+// Values can be accessed via 'wrap($key)'
+// Example usage: 'max-width: wrap(m);'
+// --------------------------------------------------
+
+$wrapDefaults: (
+  'xsmall': 600px,
+  'small':  900px,
+  'base':   1200px
+) !default;
