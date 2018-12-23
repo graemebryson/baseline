@@ -1,0 +1,18 @@
+// ====================================================================================================
+// Variables / Grid
+// ====================================================================================================
+
+// Define grid defaults
+// --------------------------------------------------
+
+// Set grid column count
+$grid__columns: 12;
+
+// Define breakpoints for responsive grid columns
+// Exclude 'xlarge' breakpoint
+$grid__breakpoints: map-remove($breakpoints, 'xlarge');
+
+// Grid gutter defaults
+$grid__gutter--narrow: spacing(3) !default;
+$grid__gutter--base: spacing(5) !default;
+$grid__gutter--wide: spacing(8) !default;

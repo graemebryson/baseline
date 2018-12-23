@@ -10,12 +10,12 @@
 // Example output: '.wrap__m'
 // --------------------------------------------------
 
-@each $mapKey, $mapValue in $wrapDefaults {
+@each $key, $value in $wrapDefaults {
   // Strip units from map values
-  $mapValue: strip-unit($mapValue);
-  .wrap--#{$mapKey} {
-    max-width: #{$mapValue*1px};
-    max-width: #{$mapValue/10*1rem};
+  $value: strip-unit($value);
+  .wrap--#{$key} {
+    max-width: #{$value*1px};
+    max-width: #{$value/10*1rem};
     width: 100%;
   }
 }

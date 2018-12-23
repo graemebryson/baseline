@@ -2,83 +2,125 @@
 // Utilities / Grid
 // ====================================================================================================
 
-// Define grid defaults
+// Update default grid values via 'variables/grid'
+
+// Responsive flex grid
 // --------------------------------------------------
 
-// Grid gutters
-$gutter__width--base: spacing(5);
-$gutter__width--narrow: spacing(3);
-$gutter__width--wide: spacing(8);
-
-
-// Build grid
-// --------------------------------------------------
-
+// Grid defaults
 .grid {
-  width: 100%;
-  // Grid to flex from medium
-  @include mq($from: medium) {
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+}
+
+// Column defaults
+.grid {
+  & > .col {
     @include flexbox;
-    // Columns — base
-    & > .col {
-      @include flex(1);
-      &:not(:last-child) { margin-right: $gutter__width--base; }
+    @include flex(1);
+    @include flex-flow(column);
+  }
+  // Allow responsive column classes to flex to desired width
+  & > [class*="col--"] { @include flex-basis(auto); }
+}
+
+
+// Generate default column width utility classes
+// Loop through $breakpoints, generating breakpoint-based utility classes
+// % values based on a 12 column grid
+// Example output: '.col--6', '.col--3-l' etc
+// --------------------------------------------------
+
+// Generate default column classes
+@for $i from 1 through 12 {
+	$col__width: ($i/$grid__columns) * 100%;
+	.col--#{$i} {
+    @include flex-basis($col__width);
+    max-width: $col__width;
+  }
+}
+
+// Generate responsive column classes
+@each $key, $value in $grid__breakpoints {
+  @include mq($from: $key) {
+    @for $i from 1 through 12 {
+  	   $col__width: ($i/$grid__columns) * 100%;
+       .col--#{$i}-#{str-slice($key, 0, 1)} {
+         @include flex-basis($col__width);
+         max-width: $col__width;
+      }
     }
-    // Columns — variants
-    &.grid--narrow > .col:not(:last-child) { margin-right: $gutter__width--narrow; }
-    &.grid--wide > .col:not(:last-child) { margin-right: $gutter__width--wide; }
   }
 }
 
 
-// Grid Modifiers
+// Grid modifiers
 // --------------------------------------------------
 
-// Set grid to flex on all device sizes
-.grid--all {
-  @include flexbox;
-  @include justify-content(space-between);
+// Set grid gutter widths
+// Example usage: '<div class="grid grid--narrow"></div>'
+.grid {
+  // Zero grid gutter
+  &.grid--zero {
+    margin: 0;
+    & > .col {
+      padding: 0;
+    }
+  }
+  // Narrow grid gutter
+  &.grid--narrow {
+    @include rem(margin-left, -$grid__gutter--narrow);
+    & > .col {
+      @include rem(padding-left, $grid__gutter--narrow);
+    }
+  }
+  // Base grid gutter
+  &.grid--base {
+    @include rem(margin-left, -$grid__gutter--base);
+    & > .col {
+      @include rem(padding-left, $grid__gutter--base);
+    }
+  }
+  // Wide grid gutter
+  &.grid--wide {
+    @include rem(margin-left, -$grid__gutter--wide);
+    & > .col {
+      @include rem(padding-left, $grid__gutter--wide);
+    }
+  }
 }
 
-// Set flex direction - column
-.grid__direction--column {
-  @include flexbox;
-  @include flex-direction(column);
-}
+// Set grid flex direction to 'column'
+.grid__direction--column { @include flex-direction(column); }
 
-// Set flex direction - row
-.grid__direction--row {
-  @include flexbox;
-  @include flex-direction(row);
-}
+// Set grid flex direction to 'row'
+.grid__direction--row { @include flex-direction(row); }
 
-// Align grid items — bottom
+// Align grid items to bottom
 .grid__vertical-align--bottom { @include align-items(flex-end); }
 
-// Align grid items — center (vertical)
+// Align grid items to center (vertical)
 .grid__vertical-align--center { @include align-items(center); }
 
-// Align grid items — center (horizontal)
+// Align grid items to center (horizontal)
 .grid__justify--center { @include justify-content(center); }
 
 
-// Column Modifiers
+// Column modifiers
 // --------------------------------------------------
 
-// Fill remaining horizontal space
-.col--fill { @include flex(1); }
-
-// Push column to center of parent
+// Push column to center of parent (horizontal)
 .col__push--center {
   margin-right: auto;
   margin-left: auto;
 }
-
-// Push column to bottom of parent
-.col__push--bottom { margin-top: auto; }
 
 // Push column to right of parent
 .col__push--right { margin-left: auto; }
 
 // Push column to left of parent
 .col__push--left { margin-right: auto; }
+
+// Push column to bottom of parent
+.col__push--bottom { margin-top: auto; }

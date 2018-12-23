@@ -10,17 +10,17 @@
 // Example output: '.mb1', '.pb1' etc
 // --------------------------------------------------
 
-@each $mapKey, $mapValue in $spacingDefaults {
+@each $key, $value in $spacingDefaults {
   @each $direction in $directionDefaults {
     // Strip units from map values
-    $spaceValue: strip-unit($mapValue);
-    .m#{str-slice($direction, 0, 1)}-#{$mapKey} {
+    $spaceValue: strip-unit($value);
+    .m#{str-slice($direction, 0, 1)}-#{$key} {
       margin-#{$direction}: #{$spaceValue*1px};
       margin-#{$direction}: #{$spaceValue/10*1rem};
     }
-    .p#{str-slice($direction, 0, 1)}-#{$mapKey} {
+    .p#{str-slice($direction, 0, 1)}-#{$key} {
       padding-#{$direction}: #{$spaceValue*1px};
-      margin-#{$direction}: #{$spaceValue/10*1rem};
+      padding-#{$direction}: #{$spaceValue/10*1rem};
     }
   }
 }
